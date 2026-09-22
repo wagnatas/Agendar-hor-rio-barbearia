@@ -3,9 +3,12 @@ package Barbearia.agendamento.Bisiness;
 import Barbearia.agendamento.Repository.agendaRepository;
 import Barbearia.agendamento.informacoes.agendamento;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,11 +20,8 @@ public class agendamentoBisiness {
 
     public agendamento save(agendamento agendar) {
         agendar.setId(UUID.randomUUID().toString());
-        LocalDateTime umaHoraAntes = agendar.getHorario().minusHours(1);
-        LocalDateTime umaHoraDepois = agendar.getHorario().plusHours(1);
-
-        if(agendaRepository.existsByHorario(agendar.getHorario())){
-            throw new RuntimeException("Horario marcado");
+        if (agendaRepository.existsByDataAndHora(agendar.getData(), agendar.getHora())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Horario ja preenchido.");
         }
         return agendaRepository.save(agendar);
     }
@@ -32,22 +32,27 @@ public class agendamentoBisiness {
 
     public agendamento atualizar(String id, agendamento dadosAtualizados) {
         agendamento agendamentoExistente = agendaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado."));
+                .orElseThrow(() -> new RuntimeException("Agendamento nao encontrado."));
+
         if (dadosAtualizados.getNome() != null) {
             agendamentoExistente.setNome(dadosAtualizados.getNome());
         }
         if (dadosAtualizados.getTelefone() != null) {
             agendamentoExistente.setTelefone(dadosAtualizados.getTelefone());
         }
-        if (dadosAtualizados.getHorario() != null) {
-            agendamentoExistente.setHorario(dadosAtualizados.getHorario());
+        if (dadosAtualizados.getData() != null || dadosAtualizados.getHora() != null) {
+            LocalDate data = dadosAtualizados.getData() != null ? dadosAtualizados.getData() : agendamentoExistente.getData();
+            LocalTime hora = dadosAtualizados.getHora() != null ? dadosAtualizados.getHora() : agendamentoExistente.getHora();
+
+            if (agendaRepository.existsByDataAndHoraAndIdNot(data, hora, id)) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Horario ja preenchido.");
+            }
+            agendamentoExistente.setData(data);
+            agendamentoExistente.setHora(hora);
         }
         if (dadosAtualizados.getServicos() != null) {
             agendamentoExistente.setServicos(dadosAtualizados.getServicos());
-            {
-                throw new RuntimeException("Horario marcado!");
-            }
-}
+        }
         return agendaRepository.save(agendamentoExistente);
-}
+    }
 }

@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Getter
@@ -17,7 +18,9 @@ public class agendamento {
 
     private String nome;
 
-    private LocalDateTime horario;
+    private LocalDate data;
+
+    private LocalTime hora;
 
     private String telefone;
 
