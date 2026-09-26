@@ -26,7 +26,7 @@ public class controllerAgenda {
         return agendamentoBisiness.findById(id);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/atualizar/{id}")
     public agendamento update(@PathVariable String id,
                               @Valid @RequestBody criarAgendaDTO dto) {
         return agendamentoBisiness.atualizar(id, dto);
