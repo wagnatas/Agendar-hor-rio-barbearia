@@ -1,8 +1,10 @@
 package Barbearia.agendamento.Controller;
 
 
+import Barbearia.agendamento.DTOs.criarAgendaDTO;
 import Barbearia.agendamento.informacoes.agendamento;
 import Barbearia.agendamento.Bisiness.agendamentoBisiness;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +17,8 @@ public class controllerAgenda {
     private agendamentoBisiness agendamentoBisiness;
 
     @PostMapping
-    public agendamento agendar(@RequestBody agendamento agendar) {
-        return agendamentoBisiness.save(agendar);
+    public agendamento agendar(@Valid @RequestBody criarAgendaDTO dto) {
+        return agendamentoBisiness.save(dto);
     }
 
     @GetMapping("/{id}")
@@ -26,7 +28,7 @@ public class controllerAgenda {
 
     @PatchMapping("/{id}")
     public agendamento update(@PathVariable String id,
-                              @RequestBody agendamento dadosatualizados) {
-        return agendamentoBisiness.atualizar(id, dadosatualizados);
+                              @Valid @RequestBody criarAgendaDTO dto) {
+        return agendamentoBisiness.atualizar(id, dto);
     }
 }

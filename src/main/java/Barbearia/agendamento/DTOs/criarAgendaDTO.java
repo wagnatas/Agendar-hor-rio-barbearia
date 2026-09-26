@@ -16,7 +16,7 @@ public class criarAgendaDTO {
     private String nome;
 
     @NotBlank
-    private String horario;
+    private String dataHora;
 
     @NotBlank
     private String telefone;
