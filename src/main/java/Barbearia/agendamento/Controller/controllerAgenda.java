@@ -6,6 +6,7 @@ import Barbearia.agendamento.informacoes.agendamento;
 import Barbearia.agendamento.Bisiness.agendamentoBisiness;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,14 @@ public class controllerAgenda {
     @PostMapping
     public agendamento agendar(@Valid @RequestBody criarAgendaDTO dto) {
         return agendamentoBisiness.save(dto);
+    }
+
+    @GetMapping
+    public Page<agendamento> agendados(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
+        return agendamentoBisiness.listar(keyword, page, size);
     }
 
     @GetMapping("/{id}")
