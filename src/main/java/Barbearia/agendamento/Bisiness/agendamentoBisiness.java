@@ -5,11 +5,11 @@ import Barbearia.agendamento.Repository.agendaRepository;
 import Barbearia.agendamento.informacoes.agendamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,5 +54,14 @@ public class agendamentoBisiness {
             agendamentoExistente.setServicos(dadosAtualizados.getServicos());
         }
         return agendaRepository.save(agendamentoExistente);
+    }
+
+    public ResponseEntity<Void> deletar(String id) {
+        if (!agendaRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Agendamento nao encontrado.");
+        }
+
+        agendaRepository.deleteById(id);
+        return null;
     }
 }

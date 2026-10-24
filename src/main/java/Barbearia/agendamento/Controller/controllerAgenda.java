@@ -6,6 +6,7 @@ import Barbearia.agendamento.informacoes.agendamento;
 import Barbearia.agendamento.Bisiness.agendamentoBisiness;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -30,5 +31,11 @@ public class controllerAgenda {
     public agendamento update(@PathVariable String id,
                               @Valid @RequestBody criarAgendaDTO dto) {
         return agendamentoBisiness.atualizar(id, dto);
+    }
+
+    @DeleteMapping("/excluir/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable String id) {
+       return agendamentoBisiness.deletar(id);
+
     }
 }
