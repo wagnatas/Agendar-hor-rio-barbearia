@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agenda • Barbearia</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/">B<span> / </span>BARBEARIA</a><span class="workspace">Gestão de agendamentos</span></header>
+  <main>
+    <section class="heading"><div><p class="eyebrow">SUA ROTINA, ORGANIZADA</p><h1>Agenda da barbearia<span>.</span></h1><p class="subtitle">Cada horário, um cliente bem cuidado.</p></div><button id="new" class="primary">＋ Novo agendamento</button></section>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <section class="panel" aria-label="Lista de agendamentos">
+      <div class="panel-title"><h2>Agendamentos</h2><span id="total" class="count">—</span></div>
+      <form id="search" class="toolbar">
+        <label class="search"><span class="sr-only">Buscar por nome ou serviço</span><input id="keyword" type="search" placeholder="Buscar por nome ou serviço…"><button type="submit">Buscar</button></label>
+        <label class="size">Exibir <select id="size"><option value="10">10 por página</option><option value="20">20 por página</option><option value="50">50 por página</option><option value="all">Todos</option></select></label>
+      </form>
+      <div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Data e horário</th><th>Serviços</th><th class="actions-title">Ações</th></tr></thead><tbody id="rows"></tbody></table></div>
+      <div id="empty" class="empty" hidden><span>✂</span><h3>Nenhum agendamento por aqui</h3><p>Cadastre um horário ou tente outra busca.</p></div>
+      <footer class="pagination"><span id="page-info" aria-live="polite"></span><div><button id="previous" type="button">← Anterior</button><button id="next" type="button">Próxima →</button></div></footer>
+    </section>
+    <p class="footnote">Mais organização para você. Mais atenção para seus clientes.</p>
+  </main>
+  <dialog id="editor">
+    <form id="appointment-form">
+      <div class="dialog-heading"><div><p class="eyebrow">RESERVA DE HORÁRIO</p><h2 id="editor-title">Novo agendamento</h2></div><button type="button" class="close" id="close" aria-label="Fechar">×</button></div>
+      <label>Nome do cliente<input name="nome" required maxlength="150" autocomplete="name" placeholder="Nome completo"></label>
+      <div class="form-grid"><label>Telefone<input name="telefone" type="tel" required maxlength="30" autocomplete="tel" placeholder="(11) 99999-9999"></label><label>Data e horário<input name="dataHora" type="datetime-local" required></label></div>
+      <label>Serviços<input name="servicos" required maxlength="500" placeholder="Corte, barba"><small>Separe os serviços por vírgula.</small></label>
+      <p id="form-error" class="form-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button type="button" id="cancel">Cancelar</button><button class="primary" id="save" type="submit">Salvar agendamento</button></div>
+    </form>
+  </dialog>
+  <dialog id="confirmation"><form id="delete-form"><p class="eyebrow">EXCLUIR AGENDAMENTO</p><h2>Cancelar este horário?</h2><p id="delete-description"></p><p>Esta ação não pode ser desfeita.</p><p id="delete-error" class="form-error" role="alert" hidden></p><div class="dialog-actions"><button id="keep" type="button">Manter agendamento</button><button id="delete" class="danger" type="submit">Excluir</button></div></form></dialog>
+</body>
+</html>
